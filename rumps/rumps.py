@@ -12,14 +12,17 @@ try:
 except ImportError:
     _NOTIFICATIONS = False
 
-from Foundation import (NSDate, NSTimer, NSRunLoop, NSDefaultRunLoopMode, NSSearchPathForDirectoriesInDomains,
-                        NSMakeRect, NSLog, NSObject)
-from AppKit import NSApplication, NSStatusBar, NSMenu, NSMenuItem, NSAlert, NSTextField, NSImage
-from PyObjCTools import AppHelper
-
 import os
 import weakref
-from collections import Mapping, Iterable
+from collections import Iterable, Mapping
+
+from AppKit import (NSAlert, NSApplication, NSImage, NSMenu, NSMenuItem,
+                    NSStatusBar, NSTextField)
+from Foundation import (NSDate, NSDefaultRunLoopMode, NSLog, NSMakeRect,
+                        NSObject, NSRunLoop,
+                        NSSearchPathForDirectoriesInDomains, NSTimer)
+from PyObjCTools import AppHelper
+
 from .utils import ListDict
 
 _TIMERS = weakref.WeakKeyDictionary()
@@ -354,7 +357,7 @@ class Menu(ListDict):
                                          'submenu'.format(n, depth, len(tuple(ele))))
                     menuitem = MenuItem(menuitem)
                     menu.add(menuitem)
-                    parse_menu(submenu, menuitem, depth+1)
+                    parse_menu(submenu, menuitem, depth + 1)
 
                 # menu item / could be visual separator where ele is None or separator
                 else:
@@ -583,6 +586,7 @@ class MenuItem(Menu):
 
 class SeparatorMenuItem(object):
     """Visual separator between :class:`rumps.MenuItem` objects in the application menu."""
+
     def __init__(self):
         self._menuitem = NSMenuItem.separatorItem()
 
@@ -599,6 +603,7 @@ class Timer(object):
                      :class:`rumps.Timer` object as its only parameter.
     :param interval: The time in seconds to wait before calling the `callback` function.
     """
+
     def __init__(self, callback, interval):
         self.set_callback(callback)
         self._interval = interval
